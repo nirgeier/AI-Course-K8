@@ -1,0 +1,114 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mcp-server
+  namespace: default
+  labels:
+    app: mcp-server
+    component: service-account
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mcp-server-role
+  labels:
+    app: mcp-server
+    component: rbac
+rules:
+  # Pod permissions
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "pods/status"]
+    verbs: ["get", "list", "watch"]
+
+  # Service and endpoints permissions
+  - apiGroups: [""]
+    resources: ["services", "endpoints"]
+    verbs: ["get", "list", "watch"]
+
+  # ConfigMap and Secret permissions (read-only)
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["get", "list"]
+
+  # Node permissions (for metrics)
+  - apiGroups: [""]
+    resources: ["nodes", "nodes/stats"]
+    verbs: ["get", "list"]
+
+  # Deployment permissions
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+    verbs: ["get", "list", "watch"]
+
+  # Metrics permissions
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["pods", "nodes"]
+    verbs: ["get", "list"]
+
+  # Event permissions
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["get", "list", "watch"]
+
+  # Namespace permissions
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mcp-server-binding
+  labels:
+    app: mcp-server
+    component: rbac
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: mcp-server-role
+subjects:
+  - kind: ServiceAccount
+    name: mcp-server
+    namespace: default
+
+---
+# Additional Role for namespace-scoped operations
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: mcp-server-namespace-role
+  namespace: default
+  labels:
+    app: mcp-server
+    component: rbac
+rules:
+  # Allow creating and managing pods in default namespace
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["create", "delete", "update", "patch"]
+
+  # Allow managing services
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["create", "delete", "update", "patch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: mcp-server-namespace-binding
+  namespace: default
+  labels:
+    app: mcp-server
+    component: rbac
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: mcp-server-namespace-role
+subjects:
+  - kind: ServiceAccount
+    name: mcp-server
+    namespace: default
