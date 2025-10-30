@@ -45,7 +45,11 @@ chmod +x *.sh
 | `install-kubectl.sh` | Installs kubectl CLI | 2-5 min |
 | `install-kind.sh` | Installs kind (Kubernetes in Docker) | 2-5 min |
 | `install-helm.sh` | Installs Helm package manager | 2-5 min |
+| `install-k9s.sh` | Installs k9s Kubernetes CLI UI | 2-5 min |
 | `install-kmcp.sh` | Installs kmcp CLI (optional) | 5 min |
+| `install-python-prereqs.sh` | Installs Python prerequisites | 3-5 min |
+| `install-uv.sh` | Installs UV (Python package manager) - macOS/Linux | 2-5 min |
+| `install-uv.ps1` | Installs UV (Python package manager) - Windows | 2-5 min |
 
 ### Cluster Management Scripts
 
