@@ -25,6 +25,7 @@ pip install -r requirements.txt
 
 # Initialize UV project
 uv init
+uv add fastmcp
 
 # Create a Zellij layout file
 cat << EOF >> zellij-layout.kdl
