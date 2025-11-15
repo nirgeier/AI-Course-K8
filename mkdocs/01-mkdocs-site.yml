@@ -1,0 +1,12 @@
+###
+### mkdocs-site.yml
+###
+docs_dir: Labs
+edit_uri:
+repo_name: nirgeier/AI-Course-K8
+repo_url: https://github.com/nirgeier/AI-Course-K8
+site_author: Nir Geier - nirgeier@gmail.com
+site_description: A collection of GitHub Labs for learning and practicing DevOps skills.
+site_dir: ./mkdocs-site
+site_name: AI-Course-K8
+site_url: https://nirgeier.github.io/AI-Course-K8/
